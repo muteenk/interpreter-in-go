@@ -2,14 +2,10 @@ package main
 
 import (
   "fmt"
-)
-
+  "monkey/token"
+);
 
 func main() {
-  fmt.Println("Hello! This is the Monkey programming language!")
-  fmt.Println("Feel free to type in commands")
-  var name string;
-  fmt.Scan(&name);
-
-  fmt.Printf("Hello %s\n", name);
+  tok := token.Token{Type: token.LET, Literal: "let"};
+  fmt.Println(tok); // {LET let}
 }
