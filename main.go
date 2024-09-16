@@ -2,7 +2,7 @@ package main
 
 import (
   "fmt"
-  "monkey/token"
+  "monkey/lexer"
 );
 
 func main() {
