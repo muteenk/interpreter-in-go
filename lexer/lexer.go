@@ -20,7 +20,7 @@ type Lexer struct {
 func newLexer (input string) *Lexer{
   lex := &Lexer{input: input, inputSize: len(input)}
   lex.readChar()
-  return l
+  return lex
 }
 
 
@@ -39,6 +39,7 @@ func (lex *Lexer) readChar() {
 }
 
 
+// Generates Next Token based on characters
 func (lex *Lexer) nextToken() token.Token {
   var tok token.Token
   
@@ -70,8 +71,10 @@ func (lex *Lexer) nextToken() token.Token {
 }
 
 
-func newToken(tokenType string, ch byte){
+// Token Creator
+func newToken(tokenType token.TokenType, ch byte) token.Token{
   return token.Token{Type: tokenType, Literal: string(ch)}
+
 }
 
 
