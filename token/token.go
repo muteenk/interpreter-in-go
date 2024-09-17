@@ -24,6 +24,12 @@ const (
   ASSIGN = "="
   PLUS = "+"
   MINUS = "-"
+  ASTERISK = "*"
+  SLASH = "/"
+  NOT = "!"
+  
+  LT = "<"
+  GT = ">"
 
   // Delimiters
   LPAREN = "("

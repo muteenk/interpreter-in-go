@@ -14,7 +14,9 @@ let add = fn(a, b) {
   a + b;
 };
 
-let result = add(a, b);`; // input string
+let result = add(a, b);
+!-/*5;
+5 < 10 > 5;`; // input string
 
   tests := []struct {
     expectedType token.TokenType
@@ -55,6 +57,18 @@ let result = add(a, b);`; // input string
     {token.COMMA, ","},
     {token.IDENT, "b"},
     {token.RPAREN, ")"},
+    {token.SEMICOLON, ";"},
+    {token.NOT, "!"},
+    {token.MINUS, "-"},
+    {token.SLASH, "/"},
+    {token.ASTERISK, "*"},
+    {token.INT, "5"},
+    {token.SEMICOLON, ";"},
+    {token.INT, "5"},
+    {token.LT, "<"},
+    {token.INT, "10"},
+    {token.GT, ">"},
+    {token.INT, "5"},
     {token.SEMICOLON, ";"},
     {token.EOF, ""},
   }
