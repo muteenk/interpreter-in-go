@@ -42,6 +42,8 @@ func (lex *Lexer) readChar() {
 // Generates Next Token based on characters
 func (lex *Lexer) nextToken() token.Token {
   var tok token.Token
+
+  lex.skipWhiteSpace()
   
   switch lex.ch {
     
@@ -64,12 +66,49 @@ func (lex *Lexer) nextToken() token.Token {
     case 0:
       tok.Literal = ""
       tok.Type = token.EOF
+    default:
+      if isLetter(lex.ch) {
+        tok.Literal = lex.readIdentifier()
+        tok.Type = token.LookupIdentifier(tok.Literal)
+        return tok
+      } else if isDigit(lex.ch) {
+        tok.Literal = lex.readNumber()
+        tok.Type = token.INT
+        return tok
+      } else {
+        tok = newToken(token.ILLEGAL, lex.ch)
+      }
   }
 
   lex.readChar()
   return tok
 }
 
+
+func (lex *Lexer) readIdentifier() string {
+  var position int = lex.cursor
+  for isLetter(lex.ch){
+    lex.readChar()
+  }
+
+  return lex.input[position:lex.cursor]
+}
+
+
+func (lex *Lexer) readNumber() string{
+  position := lex.cursor
+  for isDigit(lex.ch) {
+    lex.readChar()
+  }
+
+  return lex.input[position:lex.cursor]
+}
+
+
+
+/************************************* 
+  Helper Functions 
+*************************************/
 
 // Token Creator
 func newToken(tokenType token.TokenType, ch byte) token.Token{
@@ -78,3 +117,16 @@ func newToken(tokenType token.TokenType, ch byte) token.Token{
 }
 
 
+func isLetter(ch byte) bool {
+  return 'a' <= ch && 'z' >= ch || 'A' <= ch && 'Z' >= ch || ch == '_'
+}
+
+func isDigit(ch byte) bool {
+  return '0' <= ch && '9' >= ch
+}
+
+func (lex *Lexer) skipWhiteSpace(){
+  for lex.ch == ' ' || lex.ch == '\t' || lex.ch == '\n' || lex.ch == '\r' {
+    lex.readChar()
+  }
+}

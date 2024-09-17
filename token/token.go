@@ -33,3 +33,23 @@ const (
   COMMA = ","
   SEMICOLON = ";"
 );
+
+
+var keywords = map[string] TokenType{
+  "fn": FUNCTION,
+  "let": LET,
+}
+
+
+func LookupIdentifier(ident string) TokenType {
+  tok, ok := keywords[ident]
+
+  if ok {
+    return tok
+  }
+
+  return IDENT
+}
+
+
+
