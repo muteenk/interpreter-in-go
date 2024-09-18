@@ -24,21 +24,6 @@ func newLexer (input string) *Lexer{
 }
 
 
-// Advance to the next character
-func (lex *Lexer) readChar() {
-  
-  if lex.readCursor >= lex.inputSize {
-    lex.ch = 0;
-  } else {
-    lex.ch = lex.input[lex.readCursor]
-  }
-
-  lex.cursor = lex.readCursor
-  lex.readCursor++; 
-
-}
-
-
 // Generates Next Token based on characters
 func (lex *Lexer) nextToken() token.Token {
   var tok token.Token
@@ -48,13 +33,23 @@ func (lex *Lexer) nextToken() token.Token {
   switch lex.ch {
     
     case '=':
-      tok = newToken(token.ASSIGN, lex.ch)
+      if lex.peekChar() == '=' {
+        lex.readChar()
+        tok = token.Token{Type: token.EQ, Literal: "=="} 
+      } else {
+        tok = newToken(token.ASSIGN, lex.ch)
+      }
+    case '!':
+      if lex.peekChar() == '=' {
+        lex.readChar()
+        tok = token.Token{Type: token.NOT_EQ, Literal: "!="}
+      } else {
+        tok = newToken(token.NOT, lex.ch)
+      }
     case '+':
       tok = newToken(token.PLUS, lex.ch)
     case '-':
       tok = newToken(token.MINUS, lex.ch)
-    case '!':
-      tok = newToken(token.NOT, lex.ch)
     case '/':
       tok = newToken(token.SLASH, lex.ch)
     case '*':
@@ -96,6 +91,19 @@ func (lex *Lexer) nextToken() token.Token {
   return tok
 }
 
+// Advance to the next character
+func (lex *Lexer) readChar() {
+  
+  if lex.readCursor >= lex.inputSize {
+    lex.ch = 0;
+  } else {
+    lex.ch = lex.input[lex.readCursor]
+  }
+
+  lex.cursor = lex.readCursor
+  lex.readCursor++; 
+
+}
 
 func (lex *Lexer) readIdentifier() string {
   var position int = lex.cursor
@@ -117,6 +125,14 @@ func (lex *Lexer) readNumber() string{
 }
 
 
+func (lex *Lexer) peekChar() byte{
+  if lex.readCursor >= len(lex.input) {
+    return 0
+  } else {
+    return lex.input[lex.readCursor]
+  }
+}
+
 
 /************************************* 
   Helper Functions 
@@ -127,7 +143,6 @@ func newToken(tokenType token.TokenType, ch byte) token.Token{
   return token.Token{Type: tokenType, Literal: string(ch)}
 
 }
-
 
 func isLetter(ch byte) bool {
   return 'a' <= ch && 'z' >= ch || 'A' <= ch && 'Z' >= ch || ch == '_'
