@@ -17,7 +17,7 @@ type Lexer struct {
 
 
 // Lexer Constructor
-func newLexer (input string) *Lexer{
+func NewLexer (input string) *Lexer{
   lex := &Lexer{input: input, inputSize: len(input)}
   lex.readChar()
   return lex
@@ -25,7 +25,7 @@ func newLexer (input string) *Lexer{
 
 
 // Generates Next Token based on characters
-func (lex *Lexer) nextToken() token.Token {
+func (lex *Lexer) NextToken() token.Token {
   var tok token.Token
 
   lex.skipWhiteSpace()
